@@ -9,8 +9,8 @@ printf "${GREEN}test aug_sum${NC}\n"
 echo "(Results in Table 3)"
 
 printf "${BLUE}parallel run${NC}\n"
-./runall -r 7
+./runall -r 7 -l
 
 echo
 printf "${BLUE}sequential run${NC}\n"
-./runall -r 3 -p 1
+./runall -r 3 -p 1 -l

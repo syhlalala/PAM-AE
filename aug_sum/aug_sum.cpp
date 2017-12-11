@@ -973,7 +973,7 @@ int main (int argc, char *argv[]) {
     tmap::reserve(reserve_size, randomize);    
     double tm = execute(test_id, n, m);
 	if (i>1) results[i-1] = tm;
-	if (i==0) tmap::GC::print_stats();
+	//if (i==0) tmap::GC::print_stats();
     tmap::finish();
   }
   
