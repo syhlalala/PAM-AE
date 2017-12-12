@@ -24,7 +24,7 @@ augmented_map<entry>.
 
 Note that a plain ordered map is defined as an augmented map with no augmentation (i.e., it only has K, <_K and V in its entry) and a plain ordered set is similarly defined as an augmented map with no augmentation and no value type.
 
-Here is an example of defining an augmented map m that has integer keys and values and is augmented with value sums (similar as the augmented sum example in our paper [1]):
+Here is an example of defining an augmented map "m" that has integer keys and values and is augmented with value sums (similar as the augmented sum example in our paper [1]):
 
 ```
 struct entry {
