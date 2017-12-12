@@ -4,13 +4,13 @@ use the interface in four examples: augmented-sums, interval-queries, 2d range-q
 Usage:
 To define an augmented map using PAM, user need to specify the parameters including type names and (static) functions in the entry structure ``entry''.
 
-typename key_t: the key type (K),
-function comp: K x K -> bool: the comparison function on K (<_K)
-typename val_t: the value type (V),
-typename aug_t: the augmented value type (A),
-function from_entry: K x V -> A: the base function (g)
-function combine: A x A -> A: the combine function (f)
-function get_empty: empty -> A: the identity of f (I)
+* typename key_t: the key type (K),
+* function comp: K x K -> bool: the comparison function on K ($<_K$)
+* typename val_t: the value type (V),
+* typename aug_t: the augmented value type (A),
+* function from_entry: K x V -> A: the base function (g)
+* function combine: A x A -> A: the combine function (f)
+* function get_empty: empty -> A: the identity of f (I)
 
 Then an augmented map is defined with C++ template as augmented_map<entry>.
 
