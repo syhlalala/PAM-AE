@@ -1,7 +1,8 @@
 # PAM
 
-PAM (Parallel Augmented Maps) is a parallel C++ library implementing the interface for augmented maps [1].  It is designed for maintaining an ordered map data structure while efficiently answering range-based and related queries.    In the experiments we
-use the interface in four examples: augmented-sums, interval-queries, 2d range-queries, and an inverted index.    The released code includes the examples and scripts for running the specific experiments reported in the paper.   It is also designed so it is easy to try in many other scenarios (different sizes, different numbers of cores, and other operations described in the paper, but not reported in the experiments).
+PAM (Parallel Augmented Maps) is a parallel C++ library implementing the interface for augmented maps [1].  It is designed for maintaining an ordered map data structure while efficiently answering range-based and related queries.    In the experiments we use the interface in four examples: augmented-sums, interval-queries, 2d range-queries, and an inverted index.    The released code includes the examples and scripts for running the specific experiments reported in the paper.   It is also designed so it is easy to try in many other scenarios (different sizes, different numbers of cores, and other operations described in the paper, but not reported in the experiments).
+
+More details and examples can be found in our paper [1].
 
 ## Usage:
 
@@ -15,18 +16,39 @@ To define an augmented map using PAM, user need to specify the parameters includ
 * function combine: A x A -> A: the combine function (f)
 * function get_empty: empty -> A: the identity of f (I)
 
-Then an augmented map is defined with C++ template as augmented_map<entry>.
+Then an augmented map is defined with C++ template as 
+
+```
+augmented_map<entry>.
+```
 
 Note that a plain ordered map is defined as an augmented map with no augmentation (i.e., it only has $K$, $<_K$ and $V$ in its entry) and a plain ordered set is similarly defined as an augmented map with no augmentation and no value type.
 
-More details and examples can be found in our paper [1].
+Here is an example of defining an augmented map $m$ that has integer keys and values and is augmented with value sums (similar as the augmented sum example in our paper [1]):
+
+```
+struct entry {
+  using key_t = int;
+  using val_t = int;
+  using aug_t = int;
+  static bool comp(key_t a, key_t b) { 
+    return a < b;}
+  static aug_t get_empty() { return 0;}
+  static aug_t from_entry(key_t k, val_t v) { 
+    return v;}
+  static aug_t combine(aug_t a, aug_t b) { 
+    return a+b;}};
+augmented_map<entry> m;
+```
+
+Another quick example can be found in [1], which shows how to implement an interval tree using the PAM interface.
 
 ## Hardware dependencies
 
 Any modern (2010+) x86-based multicore machines.  Relies on 128-bit CMPXCHG (requires -mcx16 compiler flag) but does not need hardware transactional memory (TSX).  Most examples given in our scripts require 64GB memory, but range_query requires 256GB memory and aug_sum on the large input requires 1TB memory.  All the examples can take smaller input size by setting command line arguments.
 
 ## Software dependencies
-PAM requires g++ 5.4.0 or later versions supporting the Cilk Plus extensions.    The scripts that we provide in the repository use \texttt{numactl} for better performance. All tests can also run directly without "numactl".
+PAM requires g++ 5.4.0 or later versions supporting the Cilk Plus extensions.    The scripts that we provide in the repository use "numactl" for better performance. All tests can also run directly without "numactl".
 
 ## Datasets
 We use the publicly available Wikipedia database (dumped on Oct. 1, 2016) for the inverted index experiment.  We release a sample (1% of total size) in the github repository (35MB compressed).  The full data (3.5TB compressed) is available on request.  All other applications use randomly generated data.
