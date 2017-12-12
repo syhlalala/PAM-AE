@@ -958,6 +958,14 @@ double execute(size_t id, size_t n, size_t m) {
 }
 
 int main (int argc, char *argv[]) {
+  if (argc == 1) {
+        cout << "usage: ./aug_sum [-n size1] [-m size2] [-r rounds] [-p] <testid>"
+		cout << "test ids: " << endl;
+		for (int i = 0; i < 27; i++) {
+			cout << i << " - " << test_name[i] << endl;
+		}
+        exit(1);
+  }
   commandLine P(argc, argv,
 		"./aug_sum [-n size1] [-m size2] [-r rounds] [-p] <testid>");
   size_t n = P.getOptionLongValue("-n", 10000000);
