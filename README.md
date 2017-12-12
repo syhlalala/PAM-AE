@@ -1,7 +1,10 @@
+# PAM
+
 PAM (Parallel Augmented Maps) is a parallel C++ library implementing the interface for augmented maps [1].  It is designed for maintaining an ordered map data structure while efficiently answering range-based and related queries.    In the experiments we
 use the interface in four examples: augmented-sums, interval-queries, 2d range-queries, and an inverted index.    The released code includes the examples and scripts for running the specific experiments reported in the paper.   It is also designed so it is easy to try in many other scenarios (different sizes, different numbers of cores, and other operations described in the paper, but not reported in the experiments).
 
-Usage:
+## Usage:
+
 To define an augmented map using PAM, user need to specify the parameters including type names and (static) functions in the entry structure ``entry''.
 
 * typename key_t: the key type (K),
@@ -19,7 +22,8 @@ Note that a plain ordered map is defined as an augmented map with no augmentatio
 More details and examples can be found in our paper [1].
 
 
-Experiment Workflow:
+## Experiment Workflow:
+
 At the top level there is a makefile (make) and a script for compiling and running all timings (./run_all).  There are
 four example applications provided in our repository:
 
@@ -30,4 +34,15 @@ four example applications provided in our repository:
 
 In each of the directories there is a separated makefile and a script to run the timings for the corresponding application.
 
-All tests include parallel and sequential running times.  The sequential versions are the algorithms running directly on one thread, and the parallel versions use all threads on the machine using ``numactl -i all''.
+All tests include parallel and sequential running times.  The sequential versions are the algorithms running directly on one thread, and the parallel versions use all threads on the machine using “numactl -i all”.
+
+To run all tests, just type the following at the top level:
+
+```
+make
+./run_all sh
+```
+
+## Reference
+
+[1] Sun, Yihan, Daniel Ferizovic, and Guy E. Blelloch. PAM: Parallel Augmented Maps. PPoPP 2018. To appear.
