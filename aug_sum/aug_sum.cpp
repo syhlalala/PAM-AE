@@ -959,12 +959,12 @@ double execute(size_t id, size_t n, size_t m) {
 
 int main (int argc, char *argv[]) {
   if (argc == 1) {
-        cout << "usage: ./aug_sum [-n size1] [-m size2] [-r rounds] [-p] <testid>"
-		cout << "test ids: " << endl;
-		for (int i = 0; i < 27; i++) {
-			cout << i << " - " << test_name[i] << endl;
-		}
-        exit(1);
+	std::cout << "usage: ./aug_sum [-n size1] [-m size2] [-r rounds] [-p] <testid>";
+	std::cout << "test ids: " << std::endl;
+	for (int i = 0; i < 27; i++) {
+	  std::cout << i << " - " << test_name[i] << std::endl;
+	}
+    exit(1);
   }
   commandLine P(argc, argv,
 		"./aug_sum [-n size1] [-m size2] [-r rounds] [-p] <testid>");
