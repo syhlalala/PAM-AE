@@ -50,6 +50,8 @@ Any modern (2010+) x86-based multicore machines.  Relies on 128-bit CMPXCHG (req
 ## Software dependencies
 PAM requires g++ 5.4.0 or later versions supporting the Cilk Plus extensions.    The scripts that we provide in the repository use "numactl" for better performance. All tests can also run directly without "numactl".
 
+We use python to write a script to organize all results and compute speedup. It is not required to run tests.
+
 ## Datasets
 We use the publicly available Wikipedia database (dumped on Oct. 1, 2016) for the inverted index experiment.  We release a sample (1% of total size) in the github repository (35MB compressed).  The full data (3.5TB compressed) is available on request.  All other applications use randomly generated data.
 
@@ -77,6 +79,130 @@ make
 ./run_all.sh
 ```
 
+By default the script will not include the tests on very large input sizes (10 billion), which costs long. Users can use 
+
+```
+make
+./run_all.sh -l
+```
+
+to include large tests.
+
+To run separated tests on each application, users can also go to each sub-directory to run the scripts.
+
+We recommend to use numactl -i all on all parallel tests.
+
+### Augmented Sum (/aug_sum/)
+
+Using
+
+```
+make
+```
+
+will give two executable files aug_sum (augmented version) and aug_sumNA (non-augmented version). This is done by setting flag -DNO_AUG in compiling time.
+
+Using 
+
+```
+./run_aug_sum.sh -l
+```
+
+will run all experiments as shown in Table 3 in [1] on augmented sum. If you do not want to run on large input, remove "-l".
+
+Using 
+
+```
+./runall [-r rounds] [-p threads]
+```
+
+will run all functions as shown in Table 3 in [1] with 'rounds' rounds and 'threads' threads. By default rounds=3 and threads=`nproc --all` (maximum number of threads on the machine).
+
+Both scripts will output to both stdout and a file res.txt. The script run_aug_sum.sh will then call a python code to give all results (timings and speedups) in a file data.txt.
+
+If user wants to directly run our executable file (aug_sum or aug_sumNA), the arguments are listed as follows:
+
+```
+./aug_sum [-n size1] [-m size2] [-r rounds] [-p] <testid>
+```
+
+### Interval Tree (/interval/)
+
+Using 
+
+```
+make
+```
+
+will give the executable file (interval).
+
+Using
+
+```
+run_interval
+```
+will give the same experiment of interval trees as shown in Table 5 in [1]. 
+
+To directly run the executable file (interval), one can try:
+
+```
+./interval n q r
+```
+
+where n stands for the number of intervals, q is the number of querys, r is the number of rounds. By default n=100000000, q=n, r=5.
+
+### Range Tree (/range_query/)
+
+Using 
+
+```
+make
+```
+
+will give the executable file (rt_test).
+
+Using 
+
+```
+./run_range 
+```
+
+will give the same experiment of range trees as shown in Table 5 in [1]. 
+
+To directly run the executable file (rt_test), one can try:
+
+```
+./rt_test [-n size] [-l rmin] [-h rmax] [-r rounds] [-q queries] [-w window] [-t query_type]
+```
+
+where 'size' stands for the number of points, 'rmin' and 'rmax' are the upper and lower bound of coordinates, 'rounds' is the number of rounds, 'queries' is the number of queries, 'window' is the query window size (for one dimension), 'query_type' is 0 for query-all, and 1 for query-ssum. By default n=100000000, l=0, h=1000000000, r=3, q=1000, w=1000000, t=0.
+
+
+### Inverted Index
+Using 
+
+```
+make
+```
+
+will give the executable file (index).
+
+Using 
+
+```
+./run_index
+```
+
+will give the same type of experiment of inverted index as shown in Table 6 in [1], but on a smaller input size.
+
+To directly run the executable file (index), one can try:
+
+```
+./index [-o] [-v] [-n max_chars] [-q num_queries] [-f file]
+```
+
+where '-o' indicates an output file of query results, '-v' means to output verbose information, '-n' means the length to read from a file, '-q' is the number of queries, and '-f' is the input file. By default n=1000000000000 (just read the whole file), q=10000, f='wiki_small.txt'.
+
 ## Reference
 
-[1] Sun, Yihan, Daniel Ferizovic, and Guy E. Blelloch. PAM: Parallel Augmented Maps. PPoPP 2018. To appear.
+[1] Yihan Sun, Daniel Ferizovic, and Guy E. Blelloch. PAM: Parallel Augmented Maps. PPoPP 2018. 
