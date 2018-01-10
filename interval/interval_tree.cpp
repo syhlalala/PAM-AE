@@ -1,6 +1,7 @@
 #include "pam.h"
 #include <iostream>
 #include <algorithm>
+#include <vector>
 #include "pbbs-include/random.h"
 #include "pbbs-include/get_time.h"
 

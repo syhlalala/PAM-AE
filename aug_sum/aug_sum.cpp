@@ -860,6 +860,45 @@ double intersect_multi_type(size_t n, size_t m) {
     return tm;
 }
 
+double flat_aug_range(size_t n, size_t m) {
+    par* v1 = uniform_input(n, 20);
+    key_type max_key = v1[n-1].first;
+	key_type min_key = v1[0].first;
+    tmap m1(v1, v1 + n, true);
+
+    par *v2 = uniform_input_unsorted(m, max_key);
+
+    key_type *v3 = new key_type[m];
+	size_t win = v1[n-1].first/1000;
+
+    timer t;
+    t.start();
+    parallel_for(size_t i=0; i < m; i++) {
+	  par* out;
+	  tmap m2 = tmap::range(m1, v2[i].first,v2[i].first+win);
+	  struct Red {
+		  using t = key_type;
+		  static t from_entry(par e) { return e.second;}
+		  static t combine(t a, t b) { return a+b;}
+		  static t identity() {return 0;}
+	  } r;
+	  v3[i] = tmap::map_reduce(m2, r);
+	  //size_t x = m2.size();
+	  //out = pbbs::new_array<par>(x);
+      //tmap::entries(m2, out);
+	  //auto get_val = [&] (size_t i) {return out[i].second;};
+	  //v3[i] = pbbs::reduce_add(make_sequence<double>(x,get_val));
+    }
+   
+    double tm = t.stop();
+
+    delete[] v1;
+    delete[] v2;
+    delete[] v3;
+
+    return tm;
+}
+
 string test_name[] = { 
     "persistent-union",      // 0
     "persistent-intersect",  // 1
@@ -889,6 +928,7 @@ string test_name[] = {
     "insertion_build_persistent", //25
     "test_incremental_union_nonpersistent", //26
 	"intersect_multi_type", //27
+	"flat_aug_range", //28
     "nothing" 
 };
 
@@ -951,6 +991,8 @@ double execute(size_t id, size_t n, size_t m) {
 	        return test_incremental_union_nonpersistent(n, m);
 	    case 27:
 	        return intersect_multi_type(n,m);
+		case 28:
+		    return flat_aug_range(n,m);
         default: 
             assert(false);
 	        return 0.0;
@@ -959,12 +1001,12 @@ double execute(size_t id, size_t n, size_t m) {
 
 int main (int argc, char *argv[]) {
   if (argc == 1) {
-        cout << "usage: ./aug_sum [-n size1] [-m size2] [-r rounds] [-p] <testid>"
-		cout << "test ids: " << endl;
-		for (int i = 0; i < 27; i++) {
-			cout << i << " - " << test_name[i] << endl;
-		}
-        exit(1);
+	std::cout << "usage: ./aug_sum [-n size1] [-m size2] [-r rounds] [-p] <testid>";
+	std::cout << "test ids: " << std::endl;
+	for (int i = 0; i < 27; i++) {
+	  std::cout << i << " - " << test_name[i] << std::endl;
+	}
+    exit(1);
   }
   commandLine P(argc, argv,
 		"./aug_sum [-n size1] [-m size2] [-r rounds] [-p] <testid>");
