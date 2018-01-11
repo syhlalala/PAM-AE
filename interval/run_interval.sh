@@ -19,3 +19,5 @@ echo
 printf "${BLUE}sequential run${NC}\n"
 export CILK_NWORKERS=1
 ./interval_tree 100000000 100000000 3 |tee -a res.txt
+
+python comp.py

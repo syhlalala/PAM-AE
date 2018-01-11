@@ -14,18 +14,20 @@ make
 printf "${RED}Query-sum:${NC}\n"
 printf "${BLUE}Parallel run${NC}\n"
 export CILK_NWORKERS=$THREADS
-numactl -i all ./rt_test -n "$N" -q 1000000 -w 1000000000 -t 1
+numactl -i all ./rt_test -n "$N" -q 1000000 -w 1000000000 -t 1 |tee res.txt
 echo
 printf "${BLUE}Sequential run${NC}\n"
 export CILK_NWORKERS=1
-./rt_test -n "$N" -q 1000000 -w 1000000000 -t 1
+./rt_test -n "$N" -q 1000000 -w 1000000000 -t 1  |tee -a res.txt
 
 echo
 printf "${RED}Query-all:${NC}\n"
 printf "${BLUE}Parallel run${NC}\n"
 export CILK_NWORKERS=$THREADS
-numactl -i all ./rt_test -n "$N" -q 1000 -w 200000000 -t 0
+numactl -i all ./rt_test -n "$N" -q 1000 -w 200000000 -t 0  |tee -a res.txt
 echo
 printf "${BLUE}Sequential run${NC}\n"
 export CILK_NWORKERS=1
-./rt_test -n "$N" -q 1000 -w 200000000 -t 0
+./rt_test -n "$N" -q 1000 -w 200000000 -t 0  |tee -a res.txt
+
+python comp.py

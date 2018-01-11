@@ -10,7 +10,7 @@ LARGE=$1
 printf "${GREEN}test aug_sum${NC}\n"
 echo "(Results in Table 3)"
 
-echo "All results:" < res.txt
+rm res.txt
 echo $LARGE
 
 printf "${BLUE}parallel run${NC}\n"
@@ -29,3 +29,5 @@ then
 else
 	./runall -r 3 -p 1
 fi
+
+python comp.py

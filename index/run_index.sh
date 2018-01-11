@@ -12,8 +12,10 @@ echo "(Results in Table 5, with smaller inputs)"
 make
 printf "${BLUE}parallel run${NC}\n"
 export CILK_NWORKERS=$THREADS
-numactl -i all ./index -f "wiki_small.txt" -q 100000
+numactl -i all ./index -f "wiki_small.txt" -q 100000 | tee res.txt
 echo
 printf "${BLUE}sequential run${NC}\n"
 export CILK_NWORKERS=1
-./index -f "wiki_small.txt" -q 100000
+./index -f "wiki_small.txt" -q 100000 |tee -a res.txt
+
+python comp.py

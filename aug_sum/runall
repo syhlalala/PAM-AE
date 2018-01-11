@@ -34,6 +34,13 @@ echo rounds=$ROUNDS
 export CILK_NWORKERS=$THREADS
 
 head="numactl -i all"
+if (hash numactl ls 2>/dev/null) 
+then 
+    head="numactl -i all" 
+else 
+    head="" 
+fi
+
 if [ $THREADS == 1 ]
 then
     head=""

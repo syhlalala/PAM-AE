@@ -99,7 +99,7 @@ pair<double,double> run_all(vector<point_type>& points, size_t iteration,
   
   t_query_total.stop();
 
-  if (iteration == 0) r->print_status();
+  //if (iteration == 0) r->print_status();
   delete r;
   return make_pair(total_tm.get_total(), t_query_total.get_total());
 }
@@ -119,7 +119,7 @@ pair<double,double> run_sum(vector<point_type>& points, size_t iteration, data_t
 
   t_query_total.stop();
   
-  if (iteration == 0) r->print_status();
+  //if (iteration == 0) r->print_status();
   delete r;
   return make_pair(total_tm.get_total(), t_query_total.get_total());
 }
