@@ -1,8 +1,9 @@
 # PAM
 
 ```diff
-+ A updated version of the PAM library is available at https://github.com/cmuparlay/PAM
++ Note: this is the version submitted to PPoPP Artifact Evaluation. A more recent version of the PAM library is available at https://github.com/cmuparlay/PAM
 ```
+
 
 PAM (Parallel Augmented Maps) is a parallel C++ library implementing the interface for augmented maps [1].  It is designed for maintaining an ordered map data structure while efficiently answering range-based and related queries.    In the experiments we use the interface in four examples: augmented-sums, interval-queries, 2d range-queries, and an inverted index.    The released code includes the examples and scripts for running the specific experiments reported in the paper.   It is also designed so it is easy to try in many other scenarios (different sizes, different numbers of cores, and other operations described in the paper, but not reported in the experiments).
 
